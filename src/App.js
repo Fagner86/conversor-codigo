@@ -9,7 +9,7 @@ function App() {
   const handleConvert = async () => {
     console.log(code);
     try {
-      const response = await axios.post('https://api-conversor-codigo.onrender.com', { code });
+      const response = await axios.post('https://api-conversor-codigo.onrender.com/converter', { code });
       console.log('Response:', response.data); // Verifique se a resposta está correta
       setConvertedCode(response.data.convertedCode);
     } catch (error) {
