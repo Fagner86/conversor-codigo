@@ -13,7 +13,7 @@ function App() {
     setConvertedCode('Aguardando resposta do servidor...'); // Mostra a mensagem imediatamente
 
     try {
-      const response = await axios.post('https://api-conversor-codigo.onrender.com/converter', { code });
+      const response = await axios.post(process.env.REACT_APP_API_URL || 'http://localhost:5000/converter', { code });
       console.log('Resposta:', response.data);
 
       if (response.data) {
