@@ -1,70 +1,149 @@
-# Getting Started with Create React App
+# Conversor Python para JavaScript
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Sobre o Projeto
+O objetivo do  trabalho é permitir a conversão de códigos básicos escritos em Python para código equivalente em JavaScript.
+O analisador lexa atua como uma ponte entre essas duas linguagens, possibilitando que programas escritos em Python possam ser executados em ambientes que suportam JavaScript, como navegadores da web ou servidores Node.js.
+Ele visa permitir que desenvolvedores aproveitem a lógica de seus programas Python em ambientes onde apenas JavaScript é viável.
 
-## Available Scripts
+## Como Usar
+### Online
+Existem duas maneiras de utilizar o analisador lexa, uma online e outra offline.
 
-In the project directory, you can run:
+### Versão disponibilizada online: 
+Na primeira requisição, pode levar um pouco mais de tempo devido ao servidor, mas aguarde que o sistema irá funcionar.
+Acesse o [Conversor Online](https://conversor-codigo.onrender.com/). Aguarde o carregamento inicial.
 
-### `npm start`
+### Offline
+1. Baixe os arquivos "lexer.l","arquivo.y" e “arquivo.print” do [repositorio do server do conversor](https://github.com/Fagner86/server-conversor-codigo)
+2. Utilize o arquivo "arquivo.print" para inserir o código que você deseja converter.
+3. É importante que não haja uma linha em branco no início do arquivo "arquivo.print". Comece a escrever o código a partir do início.
+4. Também observe que deve haver uma linha em branco no final do código, caso contrário, a última linha pode não ser reconhecida corretamente.
+5. Instale o Bison (Yacc) e o Flex (Lex) no seu sistema.
+6. Execute no Linux:
+   ```sh
+   flex lexer.l
+   bison -d arquivo.y
+   gcc lex.yy.c arquivo.tab.c -o parser
+   ./parser arquivo.print
+  
+7. No Windows:
+   ```sh
+   flex lexer.l
+   bison -d arquivo.y
+   gcc -o parser arquivo.tab.c
+   parser.exe arquivo.print 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Exemplos entrada e saidas:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Entrada A (exemplo.print):
+   ```sh
+   print("x")
+   print(34456567)
+   print(10)
+   x = 'oiii'
+   numero = 10
 
-### `npm test`
+2. Saída A (gerada em JavaScript):
+   ```sh
+   console.log("x");
+   console.log(34456567);
+   console.log(10);
+   let x = 'oiii';
+   let numero = 10;
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Entrada B (exemplo.print):
+   ```sh
+   if numero > 0
+       print("O numero e positivo.")
+   elif numero < 0
+    print("O numero e negativo.")
+   else
+    print("O numero e zero.")  
 
-### `npm run build`
+4. Saída B (gerada em JavaScript):
+   ```sh
+   if (numero > 0) {
+   console.log("O numero e positivo.");
+   } else if (numero < 0) {
+   console.log("O numero e negativo.");
+   } else {
+   console.log("O numero e zero.");
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+5. Entrada C (exemplo.print):
+   ```sh
+   contador = 0
+   while contador < 7:
+    print(contador)
+    contador += 1
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+6. Saída C (gerada em JavaScript):
+   ```sh
+   let contador = 0;
+   while (contador < 7) {
+   console.log(contador);
+   contador++;
+   
+7. Entrada D (exemplo.print):
+   ```sh
+   contador = 0
+   while contador <= 7:
+    print(contador)
+    contador += 1
+8. Saída D (gerada em JavaScript):
+   ```sh
+   let contador = 0;
+   while (contador <= 7) {
+   console.log(contador);
+   contador++;
+   }
+9. Entrada E (exemplo.print):
+    ```sh
+    def uma(x):
+    numero = x
+    return numero
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    x = 5
 
-### `npm run eject`
+    conta = uma(x)
+    print(conta)
+    
+10. Saída E (gerada em JavaScript):
+    ```sh
+    function uma(x);
+    let numero = x;
+    return numero;
+    }
+    let x = 5;
+    let conta = uma(x)
+    console.log(conta);
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+11. Entrada F (exemplo.print):
+    ```sh
+    def comduas(x, r):
+    soma = x + r
+    return soma
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    x = 5
+    r = 6
+    conta = comduas(x, r)
+    print(conta)
+    
+12. Saída F (gerada em JavaScript):
+    ```sh
+    function comduas(x,r){
+    let soma = x + r;
+    return soma;
+    }
+    let x = 5;
+    let r = 6;
+    let conta = comduas(x,r)
+    console.log(conta)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Limitações em Relação à Linguagem Original
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Limitações Sintáticas e Semânticas: O analisador lexa se baseia nas regras definidas na gramática e nos tokens reconhecidos pelo lexer. Portanto, ele pode não lidar adequadamente com construções não previstas na gramática ou com uso incorreto dos tokens.
+Tratamento de Erros: A maneira como erros são tratados no código não é completa. Erros podem ser mal reportados ou não tratados corretamente.
+Limitações na Sintaxe: A sintaxe da linguagem customizada parece ser uma mistura de Python e JavaScript. Isso pode levar a situações em que a semântica original é preservada, mas a sintaxe resultante em JavaScript não é sempre a mais idiomática.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Conclusão
+O Conversor Python para JavaScript é útil para traduzir pequenos trechos de código Python para JavaScript. Esteja ciente das limitações e faça testes antes de usá-lo em projetos maiores.
